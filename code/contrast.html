@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contrast Adjustment</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="code/basic.html">Basic Operations</a></li>
+        <li><a href="code/basic_hist.html">Histogram</a></li>
+        <li><a href="code/arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="code/contrast.html">Contrast</a></li>
+        <li><a href="code/brightness.html">Brightness</a></li>
+        <li><a href="code/threshold.html">Thresholding</a></li>
+        <li><a href="code/otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="code/adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="code/noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Contrast Adjustment</h2>
+
+      <h3>Theory</h3>
+      <p>Contrast adjustment enhances differences between light and dark areas of an image. 
+         This can be achieved using linear transformations or scaling pixel intensities.</p>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread("assets/sample.jpg", 0)
+alpha = 1.5   # contrast control
+beta = 0      # brightness shift
+adjusted = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
+
+plt.subplot(121), plt.imshow(img, cmap='gray'), plt.title("Original")
+plt.subplot(122), plt.imshow(adjusted, cmap='gray'), plt.title("Contrast Enhanced")
+plt.show()
+      </code></pre>
+
+      <h3>Output</h3>
+      <img src="../assets/contrast.png" alt="Contrast Example" width="400">
+    </main>
+  </div>
+</body>
+</html>

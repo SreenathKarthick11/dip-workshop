@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Basic Image Operations</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="code/basic.html">Basic Operations</a></li>
+        <li><a href="code/basic_hist.html">Histogram</a></li>
+        <li><a href="code/arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="code/contrast.html">Contrast</a></li>
+        <li><a href="code/brightness.html">Brightness</a></li>
+        <li><a href="code/threshold.html">Thresholding</a></li>
+        <li><a href="code/otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="code/adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="code/noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h1>Basic Image Operations</h1>
+
+      <h3>Theory</h3>
+      <p>
+        This example introduces fundamental image operations in OpenCV:
+      </p>
+      <ul>
+        <li>Loading an image in different modes (color, grayscale, unchanged).</li>
+        <li>Checking image shape (rows, columns, color channels).</li>
+        <li>Resizing an image using absolute pixel size or scale factors.</li>
+        <li>Rotating an image (90° clockwise in this example).</li>
+        <li>Displaying images in separate windows.</li>
+        <li>Saving processed images to disk.</li>
+      </ul>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2
+import numpy as np
+
+# Load an image
+# -1 or cv2.IMREAD_COLOR     : Load a color image (default)
+#  0 or cv2.IMREAD_GRAYSCALE : Load in grayscale mode
+#  1 or cv2.IMREAD_UNCHANGED : Load including alpha channel
+img = cv2.imread("assets/bear.jpg")
+
+print("Image shape:", img.shape)   # (rows, cols, channels)
+
+# Convert to grayscale
+gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# Resize the image (two methods)
+# Method 1: Absolute size
+# img = cv2.resize(img, (400, 400))  
+
+# Method 2: Relative scaling (50% of original size)
+img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
+
+# Rotate the image (90 degrees clockwise)
+img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+
+# Display images
+cv2.imshow("Original (Rotated + Resized)", img)
+cv2.imshow("Grayscale", gray_image)
+
+# Save image (optional)
+# cv2.imwrite("bear_processed.jpg", img)
+
+# Wait until any key is pressed, then close windows
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+      </code></pre>
+
+      <h3>Output Example</h3>
+      <p>Original vs Grayscale vs Rotated Image:</p>
+      <img src="../assets/bear.jpg" alt="Original Image" width="250">
+      <img src="../assets/bear_gray.jpg" alt="Grayscale Image" width="250">
+      <img src="../assets/bear_rotated.jpg" alt="Rotated Image" width="250">
+    </main>
+  </div>
+</body>
+</html>
