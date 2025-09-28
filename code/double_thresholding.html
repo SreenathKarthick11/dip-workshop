@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Double Thresholding</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="double_thresholding.html">Double Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Double Thresholding</h2>
+
+      <h3>Theory</h3>
+      <p>
+        Double thresholding is used to segment an image based on two intensity levels:
+      </p>
+      <ul>
+        <li><b>Lower Threshold:</b> Pixels below this threshold are set to zero.</li>
+        <li><b>Upper Threshold:</b> Pixels above this threshold are set to the maximum value (255).</li>
+        <li>Intermediate pixels can be handled based on application (e.g., edge linking in Canny).</li>
+      </ul>
+      <p>This method is commonly used in edge detection and image segmentation.</p>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def double_threshold(image, lower_thresh, upper_thresh):
+    lower_thresholded = np.where(image >= lower_thresh, image, 0)
+    higher_thresholded = np.where(lower_thresholded >= upper_thresh, 255, 0)
+    return higher_thresholded.astype(np.uint8)
+
+# Read grayscale image
+img = cv2.imread('assets/coins.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Apply Canny edge detection
+lower_threshold = 50
+upper_threshold = 150
+edges = cv2.Canny(img, lower_threshold, upper_threshold)
+
+# Apply custom double thresholding
+result = double_threshold(img, lower_threshold, upper_threshold)
+
+# Plot results
+plt.figure(figsize=(10, 6))
+plt.subplot(1, 3, 1)
+plt.imshow(img, cmap='gray')
+plt.title('Original Image')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.imshow(edges, cmap='gray')
+plt.title('Canny Edges (Double Threshold)')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.imshow(result, cmap='gray')
+plt.title('Double Thresholded Image')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+      </code></pre>
+
+      <h3>Output</h3>
+      <img src="../assets/double_thesholding.png" alt="Double Thresholding Example" width="600">
+    </main>
+  </div>
+</body>
+</html>

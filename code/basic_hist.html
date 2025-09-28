@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Histogram Analysis</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast stretching</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h1>Histogram Analysis</h1>
+
+      <h3>Theory</h3>
+      <p>
+        Histograms are graphical representations of the distribution of pixel intensities 
+        in an image. They are useful for:
+      </p>
+      <ul>
+        <li>Understanding brightness and contrast levels.</li>
+        <li>Detecting underexposure or overexposure.</li>
+        <li>Performing contrast stretching and equalization.</li>
+        <li>Comparing grayscale vs. color intensity distributions.</li>
+      </ul>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_histogram(image, color_space="BGR"):
+    """
+    Plot histograms for grayscale or color images.
+    """
+    if color_space == "GRAY":
+        # Grayscale histogram
+        plt.subplot(1, 2, 1)
+        plt.hist(image.ravel(), bins=256, range=[0, 256], color="black")
+        plt.title("Grayscale Histogram")
+        plt.xlabel("Pixel Intensity")
+        plt.ylabel("Frequency")
+
+        plt.subplot(1, 2, 2)
+        plt.imshow(image, cmap="gray")
+        plt.title("Grayscale Image")
+        plt.axis("off")
+
+        plt.subplots_adjust(hspace=0.4, wspace=0.4)
+        plt.show()
+
+    elif color_space == "BGR":
+        # Convert BGR → RGB for correct color display
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        plt.subplot(2, 2, 1)
+        plt.hist(image[:, :, 2].ravel(), bins=256, range=[0, 256], color="r")
+        plt.title("Red Channel Histogram")
+
+        plt.subplot(2, 2, 2)
+        plt.hist(image[:, :, 1].ravel(), bins=256, range=[0, 256], color="g")
+        plt.title("Green Channel Histogram")
+
+        plt.subplot(2, 2, 3)
+        plt.hist(image[:, :, 0].ravel(), bins=256, range=[0, 256], color="b")
+        plt.title("Blue Channel Histogram")
+
+        plt.subplot(2, 2, 4)
+        plt.imshow(image_rgb)
+        plt.title("RGB Image")
+        plt.axis("off")
+
+        plt.subplots_adjust(hspace=0.5, wspace=0.4)
+        plt.show()
+
+# Load an image
+image_path = "assets/dog.jpg"
+image = cv2.imread(image_path)
+
+if image is None:
+    print("Error: Image not found!")
+    exit()
+
+# Convert to grayscale
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Plot histograms
+plot_histogram(gray_image, color_space="GRAY")
+plot_histogram(image, color_space="BGR")
+      </code></pre>
+
+      <h3>Output Example</h3>
+      <p>Below are example histograms:</p>
+      <img src="../assets/dog_gray_hist.png" alt="Grayscale Histogram" width="400">
+      <img src="../assets/dog_color_hist.png" alt="Color Histogram" width="400">
+    </main>
+  </div>
+</body>
+</html>

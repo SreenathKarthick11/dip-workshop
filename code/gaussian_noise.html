@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaussian Noise & Filtering</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
+        <li><a href="invert_img.html">Negative / Inverted</a></li>
+        <li><a href="illuminating_method.html">Illumination Method</a></li>
+        <li><a href="intensity_slicing.html">Intensity Slicing</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Gaussian Noise & Filtering</h2>
+
+      <h3>Theory</h3>
+      <p>
+        Gaussian noise is statistical noise having a probability density function equal to that of the normal distribution.  
+        It is commonly used to simulate sensor noise in digital images.  
+        To reduce Gaussian noise, various filters can be applied:
+      </p>
+      <ul>
+        <li><b>Mean Filter</b>: Smoothens the image by averaging neighboring pixels.</li>
+        <li><b>Gaussian Filter</b>: Weighted averaging, giving more importance to nearby pixels.</li>
+        <li><b>Geometric Mean Filter</b>: Reduces noise while preserving edges better than arithmetic mean.</li>
+      </ul>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def add_gaussian_noise(image, mean=0, sigma=50):
+    row, col, ch = image.shape
+    gauss = np.random.normal(mean, sigma, (row, col, ch))
+    noisy_image = np.clip(image + gauss, 0, 255)
+    return noisy_image.astype(np.uint8)
+
+def geometric_mean_filter(image, kernel_size):
+    height, width, channels = image.shape
+    output_image = np.copy(image)
+    offset = kernel_size // 2
+    
+    for i in range(offset, height - offset):
+        for j in range(offset, width - offset):
+            for c in range(channels):
+                kernel = image[i - offset:i + offset + 1, j - offset:j + offset + 1, c]
+                flattened_kernel = kernel.flatten().astype(np.float64)
+                flattened_kernel[flattened_kernel == 0] = 1
+                geom_mean = np.exp(np.mean(np.log(flattened_kernel)))
+                output_image[i, j, c] = np.clip(geom_mean, 0, 255)
+    return output_image.astype(np.uint8)
+
+# Load image
+image = cv2.imread('assets/bird.png')
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+# Add Gaussian noise
+noisy_image = add_gaussian_noise(image)
+
+# Apply filters
+mean_filtered_image = cv2.blur(noisy_image, (5, 5))
+gaussian_filtered_image = cv2.GaussianBlur(noisy_image, (3, 3), 1)
+gm_filtered_image = geometric_mean_filter(noisy_image, 3)
+
+# Display results as subplots
+plt.figure(figsize=(12, 8))
+plt.subplot(2, 3, 1); plt.imshow(image); plt.title("Original"); plt.axis("off")
+plt.subplot(2, 3, 2); plt.imshow(noisy_image); plt.title("Noisy Image (Gaussian)"); plt.axis("off")
+plt.subplot(2, 3, 3); plt.imshow(mean_filtered_image); plt.title("Mean Filtered (5x5)"); plt.axis("off")
+plt.subplot(2, 3, 4); plt.imshow(gaussian_filtered_image); plt.title("Gaussian Filtered"); plt.axis("off")
+plt.subplot(2, 3, 5); plt.imshow(gm_filtered_image); plt.title("Geometric Mean Filter"); plt.axis("off")
+plt.tight_layout()
+plt.show()
+      </code></pre>
+
+      <h3>Output</h3>
+      <img src="../assets/gaussian_noise.png" alt="Gaussian Noise Filtering Example" width="500">
+    </main>
+  </div>
+</body>
+</html>

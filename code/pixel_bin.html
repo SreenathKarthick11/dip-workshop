@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pixel Binning</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
+        <li><a href="pixel_bin.html">Pixel Binning</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Pixel Binning</h2>
+
+      <h3>Theory</h3>
+      <p>
+        Pixel binning is a technique used to reduce the resolution of an image by combining 
+        blocks of pixels into a single pixel. This reduces noise and computation while 
+        preserving general image structure. Commonly used in image sensors and low-resolution processing.
+      </p>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def pixel_binning(image, bin_size):
+    if bin_size <= 1:
+        return image
+    height, width = image.shape[:2]
+    new_height = (height // bin_size) * bin_size
+    new_width = (width // bin_size) * bin_size
+    image = image[:new_height, :new_width]
+    if len(image.shape) == 3:
+        binned = image.reshape(new_height // bin_size, bin_size,
+                               new_width // bin_size, bin_size, 3).mean(axis=(1, 3))
+    else:
+        binned = image.reshape(new_height // bin_size, bin_size,
+                               new_width // bin_size, bin_size).mean(axis=(1, 3))
+    return binned.astype(np.uint8)
+
+image = cv2.imread('assets/noise.jpg')
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+binned_3x3 = pixel_binning(image, 3)
+binned_10x10 = pixel_binning(image, 10)
+
+binned_3x3_up = cv2.resize(binned_3x3, (image.shape[1], image.shape[0]), interpolation=cv2.INTER_NEAREST)
+binned_10x10_up = cv2.resize(binned_10x10, (image.shape[1], image.shape[0]), interpolation=cv2.INTER_NEAREST)
+
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 3, 1); plt.imshow(image_rgb); plt.title("Original Image"); plt.axis("off")
+plt.subplot(1, 3, 2); plt.imshow(binned_3x3_up); plt.title("3x3 Binned"); plt.axis("off")
+plt.subplot(1, 3, 3); plt.imshow(binned_10x10_up); plt.title("10x10 Binned"); plt.axis("off")
+plt.tight_layout()
+plt.show()
+      </code></pre>
+
+      <h3>Output</h3>
+      <img src="../assets/pixel_bin.png" alt="Pixel Binning Example" width="600">
+    </main>
+  </div>
+</body>
+</html>

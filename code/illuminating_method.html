@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Illumination Enhancement (CLAHE)</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
+        <li><a href="invert_img.html">Negative / Inverted</a></li>
+        <li><a href="illuminating_method.html">Illumination Method</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Illumination Enhancement using CLAHE</h2>
+
+      <h3>Theory</h3>
+      <p>
+        In low-light images, global histogram equalization often fails because it 
+        enhances noise. To solve this, we use 
+        <b>CLAHE (Contrast Limited Adaptive Histogram Equalization)</b>.  
+      </p>
+      <ul>
+        <li>Works on small <b>tiles</b> of the image instead of the whole image.</li>
+        <li><b>Clip Limit</b>: Prevents over-amplification of noise by limiting histogram contrast.</li>
+        <li><b>Tile Grid Size</b>: Divides the image into small regions for localized enhancement.</li>
+        <li>Only the <b>Y channel</b> (luminance) in <code>YCrCb</code> space is enhanced → colors remain natural.</li>
+      </ul>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2   
+
+# Step 1: Load low-light image
+img = cv2.imread('assets/lowlight.jpg', cv2.IMREAD_COLOR)
+
+# Step 2: Convert to YCrCb (luminance + chrominance)
+ycrcb = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
+
+# Step 3: Create CLAHE object
+clahe = cv2.createCLAHE(clipLimit=5.0, tileGridSize=(8, 8))
+
+# Step 4: Apply CLAHE only to Y channel
+ycrcb[:, :, 0] = clahe.apply(ycrcb[:, :, 0])
+
+# Step 5: Convert back to BGR color space
+result = cv2.cvtColor(ycrcb, cv2.COLOR_YCrCb2BGR)
+
+# Show images
+cv2.imshow('Original', img)  
+cv2.imshow('Enhanced', result)  
+
+cv2.waitKey(0) 
+cv2.destroyAllWindows()
+      </code></pre>
+      <h3>Input</h3>
+      <img src="../assets/lowlight.jpg" alt="CLAHE Illumination input" width="500">
+      <h3>Output</h3>
+      <img src="../assets/illuminate.png" alt="CLAHE Illumination Enhancement Example" width="500">
+    </main>
+  </div>
+</body>
+</html>

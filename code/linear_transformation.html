@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Affine Transformation</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="afine_translations.html">Affine Transformations</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Affine Transformation (Custom Matrix)</h2>
+
+      <h3>Theory</h3>
+      <p>
+        Affine transformations modify the geometry of an image by applying 
+        linear mappings such as translation, rotation, scaling, or shearing.  
+        In this example, we manually define a transformation matrix and apply it 
+        to the pixel coordinates, producing a rotated/sheared image.
+      </p>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load the image
+img = cv2.imread('assets/low_c.jpeg', cv2.IMREAD_COLOR)
+rows, cols, _ = img.shape
+
+# Define a custom transformation matrix
+theta = np.radians(45)  # angle in radians
+rotation_matrix = np.array([
+    [1, -1],
+    [0,  1]
+])
+
+# Create a grid of pixel coordinates
+x, y = np.meshgrid(np.arange(cols), np.arange(rows))
+coords = np.stack([x.ravel(), y.ravel()], axis=1)
+
+# Center the coordinates
+center = np.array([cols / 2, rows / 2])
+coords_centered = coords - center
+
+# Apply transformation
+transformed_coords = np.dot(coords_centered, rotation_matrix.T) + center
+
+# Keep only valid coordinates
+transformed_coords = np.round(transformed_coords).astype(int)
+mask = (
+    (transformed_coords[:, 0] >= 0) & (transformed_coords[:, 0] < cols) &
+    (transformed_coords[:, 1] >= 0) & (transformed_coords[:, 1] < rows)
+)
+valid_coords = transformed_coords[mask]
+original_coords = coords[mask]
+
+# Create transformed image
+transformed_img = np.zeros_like(img)
+transformed_img[valid_coords[:, 1], valid_coords[:, 0]] = img[original_coords[:, 1], original_coords[:, 0]]
+
+# Display results
+plt.subplot(1, 2, 1)
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.title("Original")
+
+plt.subplot(1, 2, 2)
+plt.imshow(cv2.cvtColor(transformed_img, cv2.COLOR_BGR2RGB))
+plt.title("Transformed")
+
+plt.show()
+      </code></pre>
+
+      <h3>Output</h3>
+      <img src="../assets/linear_transformation.png" alt="Affine Transformation Example" width="450">
+    </main>
+  </div>
+</body>
+</html>

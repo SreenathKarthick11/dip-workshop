@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Log & Power-Law Transformations</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Log & Power-Law (Gamma) Transformations</h2>
+
+      <h3>Theory</h3>
+      <p>
+        These transformations are <b>non-linear intensity mappings</b> widely used 
+        in image enhancement:
+      </p>
+      <ul>
+        <li><b>Log Transformation</b>: Enhances low-intensity pixels more than high-intensity pixels. Useful for dark images.</li>
+        <li><b>Power-Law (Gamma) Transformation</b>: Adjusts image brightness based on a gamma value:
+          <ul>
+            <li>γ &lt; 1 → brightens the image</li>
+            <li>γ &gt; 1 → darkens the image</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Read grayscale image
+img = cv2.imread('assets/bear.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Log Transformation
+c_log = 255 / np.log(1 + np.max(img))
+log_transformed = c_log * np.log(1 + img)
+log_transformed = np.uint8(log_transformed)
+
+# Gamma Transformation
+gamma = 2.2  # try values like 0.5, 1.5, 2.0
+c_gamma = 255 / (np.max(img) ** gamma)
+gamma_transformed = c_gamma * (img ** gamma)
+gamma_transformed = np.uint8(gamma_transformed)
+
+# Show images with histograms
+images = [img, log_transformed, gamma_transformed]
+titles = ['Original Image', 'Log Transformation', 'Gamma Transformation']
+
+plt.figure(figsize=(10, 6))
+for i in range(3):
+    # Image
+    plt.subplot(3, 2, i*2 + 1)
+    plt.imshow(images[i], cmap='gray')
+    plt.title(titles[i])
+    plt.axis('off')
+
+    # Histogram
+    plt.subplot(3, 2, i*2 + 2)
+    plt.hist(images[i].ravel(), bins=256, range=(0, 256), color='black')
+    plt.title(f"{titles[i]} Histogram")
+    plt.xlabel("Intensity Value")
+    plt.ylabel("Pixel Count")
+
+plt.tight_layout()
+plt.show()
+      </code></pre>
+
+      <h3>Output</h3>
+      <img src="../assets/log_transformed.png" alt="Log and Gamma Transformation Example" width="500">
+    </main>
+  </div>
+</body>
+</html>

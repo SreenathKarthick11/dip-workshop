@@ -2,37 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DIP Workshop</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- syntax highlighting -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Processing Topics</title>
+  <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <style>
+    body { display: flex; margin: 0; font-family: Arial, sans-serif; }
+    .sidebar {
+      width: 250px;
+      background-color: #f8f9fa;
+      padding: 15px;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+    .sidebar h2 { margin-top: 0; font-size: 1.2em; }
+    .sidebar ul { list-style: none; padding: 0; }
+    .sidebar li { margin: 5px 0; }
+    .accordion {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      text-align: left;
+      padding: 8px 0;
+      font-size: 1em;
+    }
+    .submenu { display: none; padding-left: 15px; }
+    .submenu li { padding: 3px 0; }
+    .submenu li a { text-decoration: none; color: #333; }
+    .submenu li a:hover { text-decoration: underline; }
+    .content { flex: 1; padding: 20px; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Sidebar -->
-    <nav class="sidebar">
-      <h2>Topics</h2>
-      <ul>
-        <li><a href="code/basic.html">Basic Operations</a></li>
-        <li><a href="code/basic_hist.html">Histogram</a></li>
-        <li><a href="code/arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="code/contrast.html">Contrast</a></li>
-        <li><a href="code/brightness.html">Brightness</a></li>
-        <li><a href="code/threshold.html">Thresholding</a></li>
-        <li><a href="code/otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="code/adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="code/noise.html">Noise Methods</a></li>
-      </ul>
-    </nav>
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h2>Topics</h2>
+    <ul class="menu">
+      <!-- 1. Basics -->
+      <li>
+        <button class="accordion">1. Basics</button>
+        <ul class="submenu">
+          <li><a href="code/basic.html">Basic image loading & display</a></li>
+          <li><a href="code/basic_hist.html">Histogram basics</a></li>
+          <li><a href="code/arithmetic_op.html">Arithmetic operations</a></li>
+        </ul>
+      </li>
 
-    <!-- Main Content -->
-    <main class="content">
-      <h1>Digital Image Processing Workshop</h1>
-      <p>Welcome! This site contains explanations, Python code, and outputs for Digital Image Processing concepts.</p>
-      <p>Select a topic from the sidebar to explore.</p>
-    </main>
-  </div>
+      <!-- 2. Intensity & Contrast -->
+      <li>
+        <button class="accordion">2. Intensity & Contrast</button>
+        <ul class="submenu">
+          <li><a href="code/brightness.html">Brightness adjustment</a></li>
+          <li><a href="code/contrast.html">Simple contrast</a></li>
+          <li><a href="code/contrast_stretching.html">Advanced contrast stretching</a></li>
+          <li><a href="code/linear_transformation.html">Linear operations</a></li>
+          <li><a href="code/log_power_transformation.html">Log & Power transforms</a></li>
+          <li><a href="code/intensity_slicing.html">Intensity slicing</a></li>
+        </ul>
+      </li>
+
+      <!-- 3. Image Transformations -->
+      <li>
+        <button class="accordion">3. Image Transformations</button>
+        <ul class="submenu">
+          <li><a href="code/affine_translations.html">Affine transformations (shift, rotate, scale)</a></li>
+          <li><a href="code/invert_img.html">Negative image</a></li>
+          <li><a href="code/illuminating_method.html">Illumination adjustment</a></li>
+        </ul>
+      </li>
+
+      <!-- 4. Noise & Filtering -->
+      <li>
+        <button class="accordion">4. Noise & Filtering</button>
+        <ul class="submenu">
+          <li><a href="code/gaussian_noise.html">Gaussian noise</a></li>
+          <li><a href="code/salt_and_pepper_noise.html">Salt & pepper noise</a></li>
+          <li><a href="code/pixel_bin.html">Binarization by pixel grouping</a></li>
+        </ul>
+      </li>
+
+      <!-- 5. Thresholding -->
+      <li>
+        <button class="accordion">5. Thresholding</button>
+        <ul class="submenu">
+          <li><a href="code/threshold.html">Basic thresholding</a></li>
+          <li><a href="code/double_thresholding.html">Double thresholding</a></li>
+          <li><a href="code/otsu_thresholding.html">Otsu method</a></li>
+          <li><a href="code/adaptive_thresholding.html">Adaptive thresholding</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <main class="content">
+    <h1>Welcome to Image Processing Topics</h1>
+    <p>Select a topic from the sidebar to view code examples and explanations.</p>
+  </main>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion').forEach(button => {
+      button.addEventListener('click', () => {
+        const submenu = button.nextElementSibling;
+        submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
+      });
+    });
+  </script>
 </body>
 </html>
