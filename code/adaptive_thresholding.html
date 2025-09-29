@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Adaptive Thresholding</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="double_thresholding.html">Double Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Thresholding</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Adaptive Thresholding</h2>
+
+      <h3>Theory</h3>
+      <p>
+        <b>Adaptive thresholding</b> is useful when the image has varying illumination.  
+        Instead of using a single global threshold value, the threshold is calculated for smaller regions of the image.  
+        This makes it effective for images with shadows or uneven lighting.
+      </p>
+      <ul>
+        <li><b>Global Thresholding:</b> Applies a fixed value (e.g., 127) across the whole image.</li>
+        <li><b>Adaptive Mean Thresholding:</b> Threshold value is the mean of neighborhood values minus a constant.</li>
+        <li><b>Adaptive Gaussian Thresholding:</b> Threshold value is the weighted sum of neighborhood values (Gaussian weighted) minus a constant.</li>
+      </ul>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2 as cv
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load grayscale image
+img = cv.imread('assets/page.jpeg', cv.IMREAD_GRAYSCALE)
+assert img is not None, "file could not be read"
+
+# Apply median blur to reduce noise
+img = cv.medianBlur(img, 5)
+
+# Global thresholding
+ret, th1 = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
+
+# Adaptive Mean Thresholding
+th2 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_MEAN_C,
+                           cv.THRESH_BINARY, 11, 2)
+
+# Adaptive Gaussian Thresholding
+th3 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C,
+                           cv.THRESH_BINARY, 11, 2)
+
+# Plot results
+titles = ['Original Image',
+          'Global Thresholding (v=127)',
+          'Adaptive Mean Thresholding',
+          'Adaptive Gaussian Thresholding']
+
+images = [img, th1, th2, th3]
+
+for i in range(4):
+    plt.subplot(2, 2, i+1), plt.imshow(images[i], 'gray')
+    plt.title(titles[i])
+    plt.xticks([]), plt.yticks([])
+
+plt.show()
+      </code></pre>
+
+      <h3>Output</h3>
+      <img src="../assets/adaptive.png" alt="Adaptive Thresholding Example" width="800">
+    </main>
+  </div>
+</body>
+</html>

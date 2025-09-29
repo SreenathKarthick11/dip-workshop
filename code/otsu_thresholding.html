@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Otsu Thresholding</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
+        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="double_thresholding.html">Double Thresholding</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Thresholding</a></li>
+        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
+        <li><a href="noise.html">Noise Methods</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Otsu Thresholding</h2>
+
+      <h3>Theory</h3>
+      <p>
+        <b>Otsu’s method</b> is an automatic global thresholding technique.  
+        It finds the optimal threshold value by minimizing the variance within pixel classes:
+      </p>
+      <ul>
+        <li><b>Global Thresholding:</b> Applies a fixed threshold value to the entire image.</li>
+        <li><b>Otsu’s Thresholding:</b> Automatically determines the threshold by analyzing histogram distribution.</li>
+        <li><b>Otsu with Gaussian Filtering:</b> First denoises the image using Gaussian blur, then applies Otsu’s method for better results.</li>
+      </ul>
+
+      <h3>Python Code</h3>
+      <pre><code class="language-python">
+import cv2 as cv
+import numpy as np
+from matplotlib import pyplot as plt
+
+# Load grayscale image
+img = cv.imread('assets/noisy3.png', cv.IMREAD_GRAYSCALE)
+assert img is not None, "file could not be read"
+
+# Global thresholding
+ret1, th1 = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
+
+# Otsu's thresholding
+ret2, th2 = cv.threshold(img, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+
+# Otsu's thresholding after Gaussian filtering
+blur = cv.GaussianBlur(img, (5,5), 0)
+ret3, th3 = cv.threshold(blur, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+
+# Plot results
+images = [img, 0, th1,
+          img, 0, th2,
+          blur, 0, th3]
+titles = ['Original Noisy Image','Histogram','Global Thresholding (v=127)',
+          'Original Noisy Image','Histogram',"Otsu's Thresholding",
+          'Gaussian filtered Image','Histogram',"Otsu's Thresholding"]
+
+for i in range(3):
+    plt.subplot(3, 3, i*3+1), plt.imshow(images[i*3], 'gray')
+    plt.title(titles[i*3]), plt.xticks([]), plt.yticks([])
+    plt.subplot(3, 3, i*3+2), plt.hist(images[i*3].ravel(), 256)
+    plt.title(titles[i*3+1]), plt.xticks([]), plt.yticks([])
+    plt.subplot(3, 3, i*3+3), plt.imshow(images[i*3+2], 'gray')
+    plt.title(titles[i*3+2]), plt.xticks([]), plt.yticks([])
+
+plt.show()
+      </code></pre>
+
+      <h3>Output</h3>
+      <img src="../assets/otsu.png" alt="Otsu Thresholding Example" width="800">
+    </main>
+  </div>
+</body>
+</html>
