@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Intensity Slicing</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,43 +14,53 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Contrast & Intensity</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="../index.html">Home</a></li>
         <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
         <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
         <li><a href="linear_transformation.html">Linear Transformations</a></li>
-        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
-        <li><a href="invert_img.html">Negative / Inverted</a></li>
-        <li><a href="illuminating_method.html">Illumination Method</a></li>
-        <li><a href="intensity_slicing.html">Intensity Slicing</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="log_power_transformation.html">Log & Power Law</a></li>
+        <li><a href="intensity_slicing.html" class="active">Intensity Slicing</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Intensity-Level Slicing</h2>
+      <h1>Intensity-Level Slicing</h1>
 
-      <h3>Theory</h3>
-      <p>
-        <b>Intensity slicing</b> is used to highlight specific ranges of pixel intensities in an image.  
-        It is particularly useful in applications like satellite imagery and medical imaging where certain intensity 
-        ranges correspond to meaningful features.  
-      </p>
-      <ul>
-        <li><b>Binary Slicing</b>: Pixels within a given range are set to a high value (e.g., white), others are set to low (e.g., black).</li>
-        <li><b>Range Highlighting</b>: Keeps the original intensities in the chosen range and suppresses intensities outside the range.</li>
-      </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Intensity-level slicing</strong> is an image enhancement technique used to highlight specific ranges of pixel intensities.
+          It is particularly effective in applications where certain intensity ranges correspond to important features, such as
+          medical imaging (e.g., X-rays), satellite imagery, and remote sensing.
+        </p>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+        <h3>1. Methods of Intensity Slicing</h3>
+        <ul>
+          <li><strong>Binary Slicing</strong>: Pixels within the specified intensity range are set to a high value (e.g., white), while all other pixels are set to a low value (e.g., black). This clearly highlights the regions of interest.</li>
+          <li><strong>Range Highlighting</strong>: Pixels within the range retain their original intensity values, and pixels outside the range are suppressed to a low value. This method preserves some detail while emphasizing the selected range.</li>
+        </ul>
+
+        <h3>2. Applications</h3>
+        <ul>
+          <li>Enhancing specific features in satellite imagery (e.g., water bodies, vegetation).</li>
+          <li>Highlighting abnormalities in medical images (e.g., tumors, lesions).</li>
+          <li>Preprocessing images for segmentation or object detection.</li>
+        </ul>
+
+        <p>
+          By applying intensity slicing, important regions in an image become more visible and easier to analyze.
+        </p>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -104,10 +115,19 @@ plt.ylabel("Frequency")
 
 plt.tight_layout()
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <img src="../assets/intensity_slicing.png" alt="Intensity Slicing Example" width="500">
+      <!-- Output Section -->
+      <section>
+        <h2>Example Output</h2>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/intensity_slicing.png" alt="Intensity Slicing Example" width="500">
+            <figcaption>Binary and Range Highlighting of Image Intensities</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
   </div>
 </body>

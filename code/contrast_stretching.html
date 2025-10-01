@@ -6,44 +6,61 @@
   <title>Contrast Stretching</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
 <body>
   <div class="container">
+    <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Contrast & Intensity</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="../index.html">Home</a></li>
         <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast stretching</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="contrast_stretching.html" class="active">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power Law</a></li>
+        <li><a href="intensity_slicing.html">Intensity Slicing</a></li>
       </ul>
     </nav>
+
+    <!-- Main Content -->
     <main class="content">
       <h1>Contrast Stretching</h1>
 
-      <h2>1. Theory</h2>
-      <p>
-        Contrast stretching is a technique to enhance the contrast of an image by 
-        expanding the range of intensity values. This improves the visibility of features 
-        in images that are too dark or too bright.
-      </p>
-      <ul>
-        <li><b>Input Range</b>: Original intensity values <code>r_min</code> to <code>r_max</code>.</li>
-        <li><b>Output Range</b>: Stretched intensity values <code>s_min</code> to <code>s_max</code> (usually 0–255).</li>
-        <li><b>Formula</b>: <code>s = (r - r_min) / (r_max - r_min) * (s_max - s_min) + s_min</code></li>
-      </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Contrast stretching</strong> is an image enhancement technique used to improve the visibility of features by expanding the range of intensity levels. 
+          Images with low contrast (pixel values clustered within a narrow range) often appear dull or washed out, and contrast stretching redistributes the intensities to utilize the full dynamic range.
+        </p>
 
-      <h2>2. Code Example</h2>
-      <div class="code-section">
+        <h3>1. How it Works</h3>
+        <p>
+          The original pixel intensity values, denoted by <code>r</code>, are mapped from an <b>input range</b> <code>[r_min, r_max]</code> to an <b>output range</b> <code>[s_min, s_max]</code> (usually 0–255). 
+          The transformation formula is:
+        </p>
+        <pre><code>s = (r - r_min) / (r_max - r_min) * (s_max - s_min) + s_min</code></pre>
+
+        <h3>2. Applications</h3>
+        <ul>
+          <li>Enhancing low-contrast images in medical imaging (X-rays, MRI scans).</li>
+          <li>Improving satellite and aerial imagery for better feature detection.</li>
+          <li>Preparing images for computer vision tasks like segmentation and object recognition.</li>
+          <li>General photography enhancement to make images visually appealing.</li>
+        </ul>
+
+        <p>
+          By stretching pixel intensities across the available range, subtle details in shadows and highlights become more pronounced, making the image more informative.
+        </p>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
         <pre><code class="language-python">
 import cv2
 import numpy as np
@@ -57,14 +74,14 @@ def contrast_stretching(img, s_min=0, s_max=255):
     stretched = (img - r_min) / (r_max - r_min) * (s_max - s_min) + s_min
     return np.uint8(stretched)
 
-# Read grayscale image
+# Load grayscale image
 img = cv2.imread('assets/asd.jpeg', cv2.IMREAD_GRAYSCALE)
 assert img is not None, "Image not found!"
 
 # Apply contrast stretching
 stretched_img = contrast_stretching(img)
 
-# Plot original and stretched images with histograms
+# Plot images and histograms
 plt.figure(figsize=(12, 8))
 
 # Original Image and Histogram
@@ -79,7 +96,7 @@ plt.title("Original Histogram")
 plt.xlabel("Intensity")
 plt.ylabel("Frequency")
 
-# Contrast Stretched Image and Histogram
+# Stretched Image and Histogram
 plt.subplot(2, 2, 3)
 plt.imshow(stretched_img, cmap='gray')
 plt.title("Contrast Stretched Image")
@@ -94,12 +111,18 @@ plt.ylabel("Frequency")
 plt.tight_layout()
 plt.show()
         </code></pre>
-      </div>
+      </section>
 
-      <h2>3. Example Output</h2>
-      <div class="output-section">
-        <img src="../assets/contrast_stretch.png" alt="Contrast Stretched Image">
-      </div>
+      <!-- Output Section -->
+      <section>
+        <h2>Example Output</h2>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/contrast_stretch.png" alt="Contrast Stretched Image" width="400">
+            <figcaption>Contrast Stretched Image with Enhanced Visibility</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
   </div>
 </body>

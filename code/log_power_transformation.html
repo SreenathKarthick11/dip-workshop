@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log & Power-Law Transformations</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,49 +14,70 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Contrast & Intensity</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="../index.html">Home</a></li>
         <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
         <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
         <li><a href="linear_transformation.html">Linear Transformations</a></li>
-        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="log_power_transformation.html" class="active">Log & Power Law</a></li>
+        <li><a href="intensity_slicing.html">Intensity Slicing</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Log & Power-Law (Gamma) Transformations</h2>
+      <h1>Log & Power-Law (Gamma) Transformations</h1>
 
-      <h3>Theory</h3>
-      <p>
-        These transformations are <b>non-linear intensity mappings</b> widely used 
-        in image enhancement:
-      </p>
-      <ul>
-        <li><b>Log Transformation</b>: Enhances low-intensity pixels more than high-intensity pixels. Useful for dark images.</li>
-        <li><b>Power-Law (Gamma) Transformation</b>: Adjusts image brightness based on a gamma value:
-          <ul>
-            <li>γ &lt; 1 → brightens the image</li>
-            <li>γ &gt; 1 → darkens the image</li>
-          </ul>
-        </li>
-      </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Non-linear intensity transformations</strong> are used to enhance the contrast and brightness 
+          of an image in a non-linear fashion. These transformations map input intensity values to output values 
+          according to logarithmic or power-law functions.
+        </p>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+        <h3>1. Logarithmic Transformation</h3>
+        <p>
+          The logarithmic transformation enhances the intensity of dark regions in an image while compressing 
+          the brighter regions. It is defined as:
+        </p>
+        <pre><code>s = c * log(1 + r)</code></pre>
+        <p>
+          where <code>r</code> is the input pixel intensity, <code>s</code> is the output intensity, and <code>c</code> 
+          is a scaling constant.
+        </p>
+
+        <h3>2. Power-Law (Gamma) Transformation</h3>
+        <p>
+          Power-law transformations adjust image brightness using a gamma value:
+        </p>
+        <pre><code>s = c * r^γ</code></pre>
+        <ul>
+          <li><strong>γ &lt; 1</strong>: Brightens the image</li>
+          <li><strong>γ = 1</strong>: Linear mapping</li>
+          <li><strong>γ &gt; 1</strong>: Darkens the image</li>
+        </ul>
+
+        <h3>3. Applications</h3>
+        <ul>
+          <li>Enhancement of satellite and medical images</li>
+          <li>Correction of illumination issues</li>
+          <li>Preprocessing for computer vision tasks</li>
+        </ul>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Read grayscale image
+# Load grayscale image
 img = cv2.imread('assets/bear.jpg', cv2.IMREAD_GRAYSCALE)
 
 # Log Transformation
@@ -69,7 +91,7 @@ c_gamma = 255 / (np.max(img) ** gamma)
 gamma_transformed = c_gamma * (img ** gamma)
 gamma_transformed = np.uint8(gamma_transformed)
 
-# Show images with histograms
+# Display images with histograms
 images = [img, log_transformed, gamma_transformed]
 titles = ['Original Image', 'Log Transformation', 'Gamma Transformation']
 
@@ -90,10 +112,19 @@ for i in range(3):
 
 plt.tight_layout()
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <img src="../assets/log_transformed.png" alt="Log and Gamma Transformation Example" width="500">
+      <!-- Output Section -->
+      <section>
+        <h2>Example Output</h2>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/log_transformed.png" alt="Log and Gamma Transformation Example" width="500">
+            <figcaption>Original, Log, and Gamma Transformed Images</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
   </div>
 </body>

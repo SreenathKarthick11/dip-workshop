@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Affine Transformation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Transformation</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,36 +14,64 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Contrast & Intensity</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
+        <li><a href="../index.html">Home</a></li>
         <li><a href="brightness.html">Brightness</a></li>
+        <li><a href="contrast.html">Contrast</a></li>
         <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
-        <li><a href="afine_translations.html">Affine Transformations</a></li>
+        <li><a href="linear_transformation.html" class="active">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power Law</a></li>
+        <li><a href="intensity_slicing.html">Intensity Slicing</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Affine Transformation (Custom Matrix)</h2>
+      <h1>Linear Transformations</h1>
 
-      <h3>Theory</h3>
-      <p>
-        Affine transformations modify the geometry of an image by applying 
-        linear mappings such as translation, rotation, scaling, or shearing.  
-        In this example, we manually define a transformation matrix and apply it 
-        to the pixel coordinates, producing a rotated/sheared image.
-      </p>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Linear transformations</strong> are used to geometrically manipulate images by mapping pixel coordinates 
+          using linear equations. They preserve straight lines and parallelism while changing positions, orientations, 
+          or scales of objects in the image.
+        </p>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+        <h3>1. Types of Linear Transformations</h3>
+        <ul>
+          <li><strong>Translation</strong>: Moves the image horizontally or vertically.</li>
+          <li><strong>Scaling</strong>: Enlarges or shrinks the image.</li>
+          <li><strong>Rotation</strong>: Rotates the image by a specified angle around a point.</li>
+          <li><strong>Shearing</strong>: Slants the shape of an image along a specific axis.</li>
+        </ul>
+
+        <h3>2. Transformation Matrix</h3>
+        <p>
+          Linear transformations can be represented using a <strong>2×2 transformation matrix</strong>. For a pixel coordinate 
+          <code>(x, y)</code>, the transformed coordinate <code>(x', y')</code> is calculated as:
+        </p>
+        <pre><code>x' = a*x + b*y
+y' = c*x + d*y
+        </code></pre>
+        <p>
+          Here, <code>a, b, c, d</code> are matrix elements defining the type of transformation (rotation, scaling, shearing, etc.).
+        </p>
+
+        <h3>3. Applications</h3>
+        <ul>
+          <li>Image alignment and registration</li>
+          <li>Geometric corrections in satellite images</li>
+          <li>Object rotation or resizing in computer vision</li>
+          <li>Preprocessing images for deep learning models</li>
+        </ul>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,8 +80,7 @@ import matplotlib.pyplot as plt
 img = cv2.imread('assets/low_c.jpeg', cv2.IMREAD_COLOR)
 rows, cols, _ = img.shape
 
-# Define a custom transformation matrix
-theta = np.radians(45)  # angle in radians
+# Define a custom transformation matrix (example: shearing + rotation)
 rotation_matrix = np.array([
     [1, -1],
     [0,  1]
@@ -62,11 +90,11 @@ rotation_matrix = np.array([
 x, y = np.meshgrid(np.arange(cols), np.arange(rows))
 coords = np.stack([x.ravel(), y.ravel()], axis=1)
 
-# Center the coordinates
+# Center coordinates
 center = np.array([cols / 2, rows / 2])
 coords_centered = coords - center
 
-# Apply transformation
+# Apply linear transformation
 transformed_coords = np.dot(coords_centered, rotation_matrix.T) + center
 
 # Keep only valid coordinates
@@ -92,10 +120,19 @@ plt.imshow(cv2.cvtColor(transformed_img, cv2.COLOR_BGR2RGB))
 plt.title("Transformed")
 
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <img src="../assets/linear_transformation.png" alt="Affine Transformation Example" width="450">
+      <!-- Output Section -->
+      <section>
+        <h2>Example Output</h2>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/linear_transformation.png" alt="Linear Transformation Example" width="450">
+            <figcaption>Original vs. Transformed Image using Linear Transformation</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
   </div>
 </body>

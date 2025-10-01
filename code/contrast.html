@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contrast Adjustment</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,45 +14,96 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Contrast & Intensity</h2>
       <ul>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="../index.html">Home</a></li>
         <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="contrast.html" class="active">Contrast</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power Law</a></li>
+        <li><a href="intensity_slicing.html">Intensity Slicing</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Contrast Adjustment</h2>
+      <h1>Contrast Adjustment</h1>
 
-      <h3>Theory</h3>
-      <p>Contrast adjustment enhances differences between light and dark areas of an image. 
-         This can be achieved using linear transformations or scaling pixel intensities.</p>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Contrast adjustment</strong> is a fundamental image enhancement technique used to improve the distinction between light and dark regions in an image. 
+          By scaling pixel intensity values, the visibility of features becomes more pronounced, making details easier to analyze.
+        </p>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+        <h3>1. How it Works</h3>
+        <p>
+          Each pixel intensity in an image can be transformed using a simple linear formula:
+        </p>
+        <pre><code>s = α * r + β</code></pre>
+        <ul>
+          <li><code>r</code> – Original pixel intensity</li>
+          <li><code>s</code> – Adjusted pixel intensity</li>
+          <li><code>α</code> – Contrast scaling factor (α > 1 increases contrast, 0 < α < 1 decreases contrast)</li>
+          <li><code>β</code> – Brightness offset (positive values brighten, negative values darken)</li>
+        </ul>
+
+        <h3>2. Applications</h3>
+        <ul>
+          <li>Enhancing image visibility for visual inspection or presentation.</li>
+          <li>Preprocessing images for computer vision tasks such as object detection or segmentation.</li>
+          <li>Correcting low-contrast images captured in poor lighting conditions.</li>
+        </ul>
+
+        <p>
+          Proper contrast adjustment improves image quality without altering the underlying content.
+        </p>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import matplotlib.pyplot as plt
 
+# Load grayscale image
 img = cv2.imread("assets/sample.jpg", 0)
-alpha = 1.5   # contrast control
-beta = 0      # brightness shift
+
+# Contrast and brightness adjustment
+alpha = 1.5   # Contrast factor
+beta = 0      # Brightness offset
 adjusted = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
 
-plt.subplot(121), plt.imshow(img, cmap='gray'), plt.title("Original")
-plt.subplot(122), plt.imshow(adjusted, cmap='gray'), plt.title("Contrast Enhanced")
-plt.show()
-      </code></pre>
+# Display original and adjusted images
+plt.subplot(1, 2, 1)
+plt.imshow(img, cmap='gray')
+plt.title("Original")
+plt.axis('off')
 
-      <h3>Output</h3>
-      <img src="../assets/contrast.png" alt="Contrast Example" width="400">
+plt.subplot(1, 2, 2)
+plt.imshow(adjusted, cmap='gray')
+plt.title("Contrast Enhanced")
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+        </code></pre>
+      </section>
+
+      <!-- Output Section -->
+      <section>
+        <h2>Example Output</h2>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/contrast.png" alt="Contrast Adjustment Example" width="400">
+            <figcaption>Contrast Adjusted Image</figcaption>
+          </figure>
+        </div>
+      </section>
+
     </main>
   </div>
 </body>
