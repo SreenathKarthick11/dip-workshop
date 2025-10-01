@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Salt & Pepper Noise</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,43 +14,46 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Noises</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
-        <li><a href="linear_transformation.html">Linear Transformations</a></li>
-        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="gaussian_noise.html">Gaussian Noise</a></li>
+        <li><a href="salt_and_pepper_noise.html" class="active">Salt & Pepper Noise</a></li>
+        <li><a href="pixel_bin.html">Pixel Binning</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Salt & Pepper Noise</h2>
+      <h1>Salt & Pepper Noise</h1>
 
-      <h3>Theory</h3>
-      <p>
-        Salt and pepper noise randomly replaces pixel values with <b>white (salt)</b> or <b>black (pepper)</b>. 
-        It is commonly used to simulate noise in images. Filtering techniques like <b>mean</b> and <b>median filters</b> 
-        can reduce the noise.
-      </p>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Salt and pepper noise</strong> randomly replaces some pixels in an image with extremes: 
+          <strong>white (salt)</strong> or <strong>black (pepper)</strong>. It simulates impulse noise 
+          commonly introduced during image acquisition or transmission.
+        </p>
+        <ul>
+          <li><strong>White Pixels (Salt):</strong> Intensities set to maximum (255).</li>
+          <li><strong>Black Pixels (Pepper):</strong> Intensities set to minimum (0).</li>
+          <li>Filtering techniques such as <strong>mean</strong> and <strong>median filters</strong> are applied to reduce noise.</li>
+          <li><strong>Median filter</strong> is particularly effective because it preserves edges while removing noise.</li>
+        </ul>
+      </section>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import random
 import matplotlib.pyplot as plt
 
-# Function to add salt & pepper noise
 def add_salt_and_pepper_noise(image, salt_prob, pepper_prob):
+    """Add salt & pepper noise to an image."""
     img_array = np.array(image)
     height, width, _ = img_array.shape
     total_pixels = height * width
@@ -57,13 +61,13 @@ def add_salt_and_pepper_noise(image, salt_prob, pepper_prob):
     pepper_pixels = int(total_pixels * pepper_prob)
     
     for _ in range(salt_pixels):
-        row = random.randint(0, height - 1)
-        col = random.randint(0, width - 1)
+        row = random.randint(0, height-1)
+        col = random.randint(0, width-1)
         img_array[row, col] = [255, 255, 255]
     
     for _ in range(pepper_pixels):
-        row = random.randint(0, height - 1)
-        col = random.randint(0, width - 1)
+        row = random.randint(0, height-1)
+        col = random.randint(0, width-1)
         img_array[row, col] = [0, 0, 0]
     
     return img_array
@@ -76,22 +80,26 @@ image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 noisy_image = add_salt_and_pepper_noise(image, 0.2, 0.2)
 
 # Apply filters
-mean_filtered_image = cv2.blur(noisy_image, (3, 3))
-median_filtered_image = cv2.medianBlur(noisy_image, 3)
+mean_filtered = cv2.blur(noisy_image, (3, 3))
+median_filtered = cv2.medianBlur(noisy_image, 3)
 
-# Plot results
+# Display results
 plt.figure(figsize=(12, 8))
-plt.subplot(2, 2, 1); plt.imshow(image); plt.title("Original Image"); plt.axis("off")
-plt.subplot(2, 2, 2); plt.imshow(noisy_image); plt.title("Salt & Pepper Noise"); plt.axis("off")
-plt.subplot(2, 2, 3); plt.imshow(mean_filtered_image); plt.title("Mean Filtered (3x3)"); plt.axis("off")
-plt.subplot(2, 2, 4); plt.imshow(median_filtered_image); plt.title("Median Filtered (3x3)"); plt.axis("off")
+plt.subplot(2,2,1); plt.imshow(image); plt.title("Original Image"); plt.axis("off")
+plt.subplot(2,2,2); plt.imshow(noisy_image); plt.title("Salt & Pepper Noise"); plt.axis("off")
+plt.subplot(2,2,3); plt.imshow(mean_filtered); plt.title("Mean Filtered (3x3)"); plt.axis("off")
+plt.subplot(2,2,4); plt.imshow(median_filtered); plt.title("Median Filtered (3x3)"); plt.axis("off")
 plt.tight_layout()
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <p><b>Salt & Pepper Noise Example</b>:</p>
-      <img src="../assets/sp_noise.png" alt="Salt & Pepper Noise Example" width="500">
+      <!-- Output Section -->
+      <section>
+        <h2>Output</h2>
+        <p><strong>Salt & Pepper Noise Example</strong>:</p>
+        <img src="../assets/sp_noise.png" alt="Salt & Pepper Noise Example" width="500">
+      </section>
     </main>
   </div>
 </body>

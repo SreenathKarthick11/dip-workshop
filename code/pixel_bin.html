@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pixel Binning</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,48 +14,51 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Noises</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
-        <li><a href="linear_transformation.html">Linear Transformations</a></li>
-        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
-        <li><a href="pixel_bin.html">Pixel Binning</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="gaussian_noise.html">Gaussian Noise</a></li>
+        <li><a href="salt_and_pepper_noise.html">Salt & Pepper Noise</a></li>
+        <li><a href="pixel_bin.html" class="active">Pixel Binning</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Pixel Binning</h2>
+      <h1>Pixel Binning</h1>
 
-      <h3>Theory</h3>
-      <p>
-        Pixel binning is a technique used to reduce the resolution of an image by combining 
-        blocks of pixels into a single pixel. This reduces noise and computation while 
-        preserving general image structure. Commonly used in image sensors and low-resolution processing.
-      </p>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Pixel binning</strong> is a technique that reduces image resolution by 
+          combining blocks of pixels into a single pixel. This process:
+        </p>
+        <ul>
+          <li>Reduces noise by averaging pixel values in each block.</li>
+          <li>Decreases computational load for subsequent processing.</li>
+          <li>Preserves overall image structure and features.</li>
+          <li>Is commonly used in image sensors, astronomy, and low-resolution imaging.</li>
+        </ul>
+      </section>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
 def pixel_binning(image, bin_size):
+    """Reduce image resolution by combining blocks of pixels."""
     if bin_size <= 1:
         return image
     height, width = image.shape[:2]
     new_height = (height // bin_size) * bin_size
     new_width = (width // bin_size) * bin_size
     image = image[:new_height, :new_width]
+    
     if len(image.shape) == 3:
         binned = image.reshape(new_height // bin_size, bin_size,
                                new_width // bin_size, bin_size, 3).mean(axis=(1, 3))
@@ -63,25 +67,34 @@ def pixel_binning(image, bin_size):
                                new_width // bin_size, bin_size).mean(axis=(1, 3))
     return binned.astype(np.uint8)
 
+# Load image
 image = cv2.imread('assets/noise.jpg')
 image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
+# Apply binning
 binned_3x3 = pixel_binning(image, 3)
 binned_10x10 = pixel_binning(image, 10)
 
+# Resize back to original dimensions for display
 binned_3x3_up = cv2.resize(binned_3x3, (image.shape[1], image.shape[0]), interpolation=cv2.INTER_NEAREST)
 binned_10x10_up = cv2.resize(binned_10x10, (image.shape[1], image.shape[0]), interpolation=cv2.INTER_NEAREST)
 
+# Display images
 plt.figure(figsize=(12, 6))
 plt.subplot(1, 3, 1); plt.imshow(image_rgb); plt.title("Original Image"); plt.axis("off")
 plt.subplot(1, 3, 2); plt.imshow(binned_3x3_up); plt.title("3x3 Binned"); plt.axis("off")
 plt.subplot(1, 3, 3); plt.imshow(binned_10x10_up); plt.title("10x10 Binned"); plt.axis("off")
 plt.tight_layout()
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <img src="../assets/pixel_bin.png" alt="Pixel Binning Example" width="600">
+      <!-- Output Section -->
+      <section>
+        <h2>Output</h2>
+        <p><strong>Pixel Binning Example</strong>:</p>
+        <img src="../assets/pixel_bin.png" alt="Pixel Binning Example" width="600">
+      </section>
     </main>
   </div>
 </body>
