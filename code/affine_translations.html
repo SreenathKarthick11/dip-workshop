@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Affine Transformations</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,45 +14,47 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Transformations</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
-        <li><a href="linear_transformation.html">Linear Transformations</a></li>
-        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
-        <li><a href="afine_translations.html">Affine Transformations</a></li>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="affine_translations.html" class="active">Affine Transformations</a></li>
+        <li><a href="invert_img.html">Negative Image</a></li>
+        <li><a href="illuminating_method.html">Illumination</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Affine Transformations</h2>
+      <h1>Affine Transformations</h1>
 
-      <h3>Theory</h3>
-      <p>
-        Affine transformations are <b>linear geometric transformations</b> that preserve
-        points, straight lines, and planes. They include operations like scaling, rotation,
-        shearing, translation, and reflection. These are performed using transformation
-        matrices applied to image coordinates via <code>cv2.warpAffine()</code>.
-      </p>
-      <ul>
-        <li><b>Scaling</b>: Enlarges or shrinks the image.</li>
-        <li><b>Rotation</b>: Rotates the image around the origin.</li>
-        <li><b>Shearing</b>: Distorts the image along x or y axis.</li>
-        <li><b>Translation</b>: Moves the image position.</li>
-        <li><b>Reflection</b>: Flips the image across an axis.</li>
-      </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Affine transformations</strong> are linear geometric transformations that preserve points, straight lines, and planes. 
+          They are widely used in image processing to manipulate image geometry without altering the parallelism of lines.
+        </p>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+        <h3>Types of Affine Transformations</h3>
+        <ul>
+          <li><strong>Scaling:</strong> Enlarges or shrinks the image.</li>
+          <li><strong>Rotation:</strong> Rotates the image around a fixed point.</li>
+          <li><strong>Shearing:</strong> Slants the image along the x or y axis.</li>
+          <li><strong>Translation:</strong> Moves the image position.</li>
+          <li><strong>Reflection:</strong> Flips the image across an axis.</li>
+        </ul>
+
+        <h3>Implementation</h3>
+        <p>
+          Affine transformations are applied using transformation matrices with <code>cv2.warpAffine()</code>. 
+          Each type of transformation has a specific matrix representation.
+        </p>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -61,72 +64,75 @@ img = cv2.imread('assets/bear.jpg')
 rows, cols, _ = img.shape
 
 # 1. Scaling
-scale_matrix = np.array([
-    [1.5, 0, 0],  
-    [0, 1.5, 0]
-], dtype=np.float32)
+scale_matrix = np.array([[1.5, 0, 0], [0, 1.5, 0]], dtype=np.float32)
 scaled_img = cv2.warpAffine(img, scale_matrix, (cols, rows))
 
 # 2. Rotation (45 degrees)
 theta = np.radians(45)
-rotation_matrix = np.array([
-    [np.cos(theta), -np.sin(theta), 0],
-    [np.sin(theta),  np.cos(theta), 0]
-], dtype=np.float32)
+rotation_matrix = np.array([[np.cos(theta), -np.sin(theta), 0],
+                            [np.sin(theta),  np.cos(theta), 0]], dtype=np.float32)
 rotated_img = cv2.warpAffine(img, rotation_matrix, (cols, rows))
 
 # 3. Shearing
-shear_matrix = np.array([
-    [1, 0.5, 0],  
-    [0.5, 1, 0]
-], dtype=np.float32)
+shear_matrix = np.array([[1, 0.5, 0], [0.5, 1, 0]], dtype=np.float32)
 sheared_img = cv2.warpAffine(img, shear_matrix, (cols, rows))
 
 # 4. Translation
-translation_matrix = np.array([
-    [1, 0, 100],  
-    [0, 1, 50]
-], dtype=np.float32)
+translation_matrix = np.array([[1, 0, 100], [0, 1, 50]], dtype=np.float32)
 translated_img = cv2.warpAffine(img, translation_matrix, (cols, rows))
 
 # 5. Reflection
-reflected_matrix = np.array([
-    [-1, 0, cols],   
-    [0, 1, 0]
-], dtype=np.float32)
+reflected_matrix = np.array([[-1, 0, cols], [0, 1, 0]], dtype=np.float32)
 reflected_img = cv2.warpAffine(img, reflected_matrix, (cols, rows))
 
 # Display results
+plt.figure(figsize=(12, 6))
+
 plt.subplot(2, 3, 1)
 plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 plt.title('Original')
+plt.axis('off')
 
 plt.subplot(2, 3, 2)
 plt.imshow(cv2.cvtColor(scaled_img, cv2.COLOR_BGR2RGB))
 plt.title('Scaled')
+plt.axis('off')
 
 plt.subplot(2, 3, 3)
 plt.imshow(cv2.cvtColor(rotated_img, cv2.COLOR_BGR2RGB))
 plt.title('Rotated')
+plt.axis('off')
 
 plt.subplot(2, 3, 4)
 plt.imshow(cv2.cvtColor(sheared_img, cv2.COLOR_BGR2RGB))
 plt.title('Sheared')
+plt.axis('off')
 
 plt.subplot(2, 3, 5)
 plt.imshow(cv2.cvtColor(translated_img, cv2.COLOR_BGR2RGB))
 plt.title('Translated')
+plt.axis('off')
 
 plt.subplot(2, 3, 6)
 plt.imshow(cv2.cvtColor(reflected_img, cv2.COLOR_BGR2RGB))
 plt.title('Reflected')
+plt.axis('off')
 
 plt.tight_layout()
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <img src="../assets/affine.png" alt="Affine Transformation Example" width="600">
+      <!-- Output Section -->
+      <section>
+        <h2>Example Output</h2>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/affine.png" alt="Affine Transformation Example" width="600">
+            <figcaption>Original and Affine Transformed Images</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
   </div>
 </body>

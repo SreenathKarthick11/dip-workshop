@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Negative & Inverted Images</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,46 +14,42 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Transformations</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
-        <li><a href="linear_transformation.html">Linear Transformations</a></li>
-        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
-        <li><a href="invert_img.html">Negative / Inverted</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="affine_translations.html">Affine Transformations</a></li>
+        <li><a href="invert_img.html" class="active">Negative Image</a></li>
+        <li><a href="illuminating_method.html">Illumination</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Negative & Inverted Images</h2>
+      <h1>Negative & Inverted Images</h1>
 
-      <h3>Theory</h3>
-      <p>
-        A <b>negative image</b> is obtained by inverting the intensity of pixels.
-        It is commonly used in image enhancement and medical imaging:
-      </p>
-      <ul>
-        <li><b>Grayscale Inversion</b>: 
-          <code>inverted = 255 - gray_image</code><br>
-          Enhances visual details in low-intensity regions.
-        </li>
-        <li><b>Color Negative</b>:
-          <code>negative = 255 - color_image</code><br>
-          Produces a "film negative" effect.
-        </li>
-      </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          A <strong>negative image</strong> is created by inverting pixel intensities. 
+          This technique is widely used in image enhancement, medical imaging, and photography to highlight details not visible in the original image.
+        </p>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+        <h3>Key Points</h3>
+        <ul>
+          <li><strong>Grayscale Inversion:</strong> 
+              <code>inverted = 255 - gray_image</code>. Enhances low-intensity details.
+          </li>
+          <li><strong>Color Negative:</strong> 
+              <code>negative = 255 - color_image</code>. Produces a “film negative” effect while maintaining color relationships.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -69,29 +66,33 @@ inverted_img = 255 - bw_image
 # Negative (color inversion)
 negative_img = 255 - image
 
-# Plot results
+# Display results
 plt.subplot(2,2,1)
 plt.imshow(bw_image, cmap='gray')
-plt.title('Black/White image')
+plt.title('Original B/W Image')
 
 plt.subplot(2,2,2)
 plt.imshow(inverted_img, cmap='gray')
-plt.title('Inverted B/W image')
+plt.title('Inverted B/W Image')
 
 plt.subplot(2,2,3)
 plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-plt.title('Original Image')
+plt.title('Original Color Image')
 
 plt.subplot(2,2,4)
 plt.imshow(cv2.cvtColor(negative_img, cv2.COLOR_BGR2RGB))
-plt.title('Negative Image')
+plt.title('Negative Color Image')
 
 plt.subplots_adjust(hspace=0.6, wspace=0.4)
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <img src="../assets/inverted_negative.png" alt="Negative & Inverted Example" width="500">
+      <!-- Output Section -->
+      <section>
+        <h2>Output</h2>
+        <img src="../assets/inverted_negative.png" alt="Negative & Inverted Example" width="500">
+      </section>
     </main>
   </div>
 </body>
