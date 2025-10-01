@@ -5,72 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Brightness Calculation</title>
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+
+  <!-- Prism.js for syntax highlighting -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
 <body>
   <div class="container">
+    <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Contrast & Intensity</h2>
       <ul>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="brightness.html" class="active">Brightness</a></li>
         <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast stretching</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
+        <li><a href="linear_transformation.html">Linear Transformations</a></li>
+        <li><a href="log_power_transformation.html">Log & Power Law</a></li>
+        <li><a href="intensity_slicing.html">Intensity Slicing</a></li>
       </ul>
     </nav>
+
+    <!-- Main Content -->
     <main class="content">
       <h1>Image Brightness Calculation</h1>
 
-      <h2>1. Theory</h2>
-      <p>
-        Brightness is a measure of the overall lightness or intensity of an image. 
-        Calculating the average brightness helps in image analysis tasks such as thresholding, 
-        contrast adjustment, or exposure evaluation.
-      </p>
-      <ul>
-        <li><b>Average Brightness</b>: Sum of all pixel values divided by the total number of pixels.</li>
-      </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Brightness</strong> refers to the perceived lightness of an image. 
+          It is a critical parameter in image processing and computer vision, 
+          affecting tasks such as thresholding, contrast adjustment, and exposure evaluation.
+        </p>
 
-      <h2>2. Code Example</h2>
-      <div class="code-section">
+        <h3>1. Average Brightness</h3>
+        <p>
+          The <b>average brightness</b> is calculated as the mean of all pixel intensities in the image. 
+          For grayscale images, this is simply the mean of the single intensity channel. 
+          For color images, the mean is computed across all channels.
+        </p>
+        <p>
+          <b>Formula:</b><br>
+          <em>Average Brightness = (Sum of all pixel values) / (Total number of pixels)</em>
+        </p>
+
+        <h3>2. Applications</h3>
+        <ul>
+          <li>Detecting underexposed or overexposed images.</li>
+          <li>Normalizing images before further processing (e.g., histogram equalization).</li>
+          <li>Adjusting brightness for better visualization or aesthetics.</li>
+          <li>Preprocessing for machine learning models to maintain consistent lighting.</li>
+        </ul>
+
+        <p>
+          By understanding the average brightness of an image, we can make informed adjustments 
+          to improve its quality and prepare it for subsequent analysis.
+        </p>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
         <pre><code class="language-python">
 import cv2
 import numpy as np
 
 def calculate_brightness(image_path):
+    # Load the image
     image = cv2.imread(image_path)
 
     if image is None:
         print("Error: Image not found!")
         return None
     
-    # Calculate the average brightness
+    # Calculate average brightness
     brightness = np.mean(image)
     return brightness
 
-# Path to your image
+# Path to image
 image_path = "assets/QR.png"
 
-# Calculate and display the brightness
+# Compute and display brightness
 brightness = calculate_brightness(image_path)
 if brightness is not None:
     print(f"Average Brightness: {brightness}")
         </code></pre>
-      </div>
+      </section>
 
-      <h2>3. Example Output</h2>
-      <div class="output-section">
-        <p><b>Sample Brightness Calculation:</b></p>
-        <pre>Average Brightness: 125.3</pre>
-      </div>
+      <!-- Output Section -->
+      <section>
+        <h2>Example Output</h2>
+        <div class="output-gallery">
+          <figure>
+            <pre>Average Brightness: 125.3</pre>
+            <figcaption>Calculated Brightness</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
   </div>
 </body>
