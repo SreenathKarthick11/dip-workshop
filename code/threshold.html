@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Thresholding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thresholding Techniques</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,58 +14,71 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Thresholding</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
-        <li><a href="linear_transformation.html">Linear Transformations</a></li>
-        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="threshold.html" class="active">Thresholding</a></li>
+        <li><a href="double_thresholding.html">Double Thresholding</a></li>
         <li><a href="otsu_thresholding.html">Otsu Method</a></li>
         <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Thresholding Techniques</h2>
+      <h1>Thresholding Techniques</h1>
 
-      <h3>Theory</h3>
-      <p>
-        Thresholding is a simple but effective method for image segmentation. 
-        It converts grayscale images into binary or modified binary images 
-        based on a threshold value. Common types include:
-      </p>
-      <ul>
-        <li><b>Binary:</b> Pixels above the threshold become white, below become black.</li>
-        <li><b>Binary Inverted:</b> Inverts the binary output.</li>
-        <li><b>Truncated:</b> Pixel values above the threshold are set to the threshold value.</li>
-        <li><b>To Zero:</b> Pixels below the threshold are set to zero; above threshold remain unchanged.</li>
-        <li><b>To Zero Inverted:</b> Pixels above the threshold are set to zero; below threshold remain unchanged.</li>
-      </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Thresholding</strong> is a fundamental technique for image segmentation. 
+          It converts a grayscale image into a binary image (or modified binary) by classifying 
+          pixels based on intensity values. Pixels are compared against a chosen threshold value, 
+          and the output depends on whether they are above or below this value.
+        </p>
+        <p>
+          Thresholding is widely used for:
+        </p>
+        <ul>
+          <li>Segmenting objects from the background.</li>
+          <li>Enhancing features in preprocessing steps for computer vision tasks.</li>
+          <li>Reducing computational complexity for further analysis.</li>
+        </ul>
+        <p>
+          Common thresholding types include:
+        </p>
+        <ul>
+          <li><b>Binary Threshold:</b> Pixels above the threshold are set to max value (white), below set to 0 (black).</li>
+          <li><b>Binary Inverted:</b> Inverts binary output; pixels above threshold become 0, below become max value.</li>
+          <li><b>Truncated:</b> Pixel values above threshold are set to the threshold value; below threshold remain unchanged.</li>
+          <li><b>To Zero:</b> Pixels below threshold are set to 0; above threshold remain unchanged.</li>
+          <li><b>To Zero Inverted:</b> Pixels above threshold are set to 0; below threshold remain unchanged.</li>
+        </ul>
+        <p>
+          Threshold selection can be <strong>manual</strong> (fixed value) or <strong>automatic</strong> (methods like Otsu or adaptive thresholding), depending on image characteristics.
+        </p>
+      </section>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import matplotlib.pyplot as plt
 
-# Read grayscale image
-img = cv2.imread('assets/bird.png', 0)
-img = cv2.medianBlur(img, 5)
+# Load grayscale image
+img = cv2.imread('assets/bird.png', cv2.IMREAD_GRAYSCALE)
+img = cv2.medianBlur(img, 5)  # Reduce noise
 
-# Apply thresholding
+# Apply different thresholding methods
 _, binary = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
 _, binary_inv = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
 _, trunc = cv2.threshold(img, 127, 255, cv2.THRESH_TRUNC)
 _, tozero = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO)
 _, tozero_inv = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO_INV)
 
-# Plot results
+# Display results
 plt.figure(figsize=(12, 8))
 plt.subplot(2, 3, 1); plt.imshow(img, cmap='gray'); plt.title("Original"); plt.axis("off")
 plt.subplot(2, 3, 2); plt.imshow(binary, cmap='gray'); plt.title("Binary"); plt.axis("off")
@@ -74,10 +88,14 @@ plt.subplot(2, 3, 5); plt.imshow(tozero, cmap='gray'); plt.title("To Zero"); plt
 plt.subplot(2, 3, 6); plt.imshow(tozero_inv, cmap='gray'); plt.title("To Zero Inverted"); plt.axis("off")
 plt.tight_layout()
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <img src="../assets/threshold.png" alt="Thresholding Example" width="600">
+      <!-- Output Section -->
+      <section>
+        <h2>Output</h2>
+        <img src="../assets/threshold.png" alt="Thresholding Example" width="600">
+      </section>
     </main>
   </div>
 </body>

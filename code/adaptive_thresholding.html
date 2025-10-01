@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adaptive Thresholding</title>
   <link rel="stylesheet" href="../style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,42 +14,41 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Thresholding</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast Stretching</a></li>
-        <li><a href="linear_transformation.html">Linear Transformations</a></li>
-        <li><a href="log_power_transformation.html">Log & Power-Law</a></li>
+        <li><a href="../index.html">Home</a></li>
         <li><a href="threshold.html">Thresholding</a></li>
         <li><a href="double_thresholding.html">Double Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Thresholding</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
+        <li><a href="adaptive_thresholding.html" class="active">Adaptive Thresholding</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h2>Adaptive Thresholding</h2>
+      <h1>Adaptive Thresholding</h1>
 
-      <h3>Theory</h3>
-      <p>
-        <b>Adaptive thresholding</b> is useful when the image has varying illumination.  
-        Instead of using a single global threshold value, the threshold is calculated for smaller regions of the image.  
-        This makes it effective for images with shadows or uneven lighting.
-      </p>
-      <ul>
-        <li><b>Global Thresholding:</b> Applies a fixed value (e.g., 127) across the whole image.</li>
-        <li><b>Adaptive Mean Thresholding:</b> Threshold value is the mean of neighborhood values minus a constant.</li>
-        <li><b>Adaptive Gaussian Thresholding:</b> Threshold value is the weighted sum of neighborhood values (Gaussian weighted) minus a constant.</li>
-      </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          <strong>Adaptive thresholding</strong> is used when an image has uneven illumination, shadows, or gradients. 
+          Unlike global thresholding, which uses a single threshold value for the entire image, adaptive thresholding computes 
+          a threshold for smaller regions (blocks or neighborhoods) of the image. This allows for accurate segmentation of regions even under varying lighting conditions.
+        </p>
+        <ul>
+          <li><b>Global Thresholding:</b> Applies a fixed threshold across the entire image. Simple but ineffective for images with varying lighting.</li>
+          <li><b>Adaptive Mean Thresholding:</b> Calculates the threshold for each local neighborhood as the mean of the pixel values minus a constant.</li>
+          <li><b>Adaptive Gaussian Thresholding:</b> Calculates the threshold for each neighborhood as a weighted sum of pixel values (Gaussian weighting) minus a constant. This gives smoother results compared to mean thresholding.</li>
+          <li><b>Block Size:</b> Determines the size of the neighborhood to calculate the threshold. Typical values are odd numbers like 3, 5, 11, etc.</li>
+          <li><b>Applications:</b> Document scanning, OCR preprocessing, detecting text in unevenly illuminated images, and general segmentation tasks.</li>
+        </ul>
+      </section>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -84,11 +84,16 @@ for i in range(4):
     plt.title(titles[i])
     plt.xticks([]), plt.yticks([])
 
+plt.tight_layout()
 plt.show()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output</h3>
-      <img src="../assets/adaptive.png" alt="Adaptive Thresholding Example" width="800">
+      <!-- Output Section -->
+      <section>
+        <h2>Output</h2>
+        <img src="../assets/adaptive.png" alt="Adaptive Thresholding Example" width="800">
+      </section>
     </main>
   </div>
 </body>
