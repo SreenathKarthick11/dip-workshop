@@ -5,51 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Arithmetic & Logical Operations</title>
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+
+  <!-- Prism.js for syntax highlighting -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
 <body>
-    <div class="container">
+  <div class="container">
+    <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Basic Topics</h2>
       <ul>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
         <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="contrast_stretching.html">Contrast stretching</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="basic_hist.html">Histogram</a></li>
+        <li><a href="arithmetic_op.html" class="active">Arithmetic Operations</a></li>
       </ul>
     </nav>
+
+    <!-- Main Content -->
     <main class="content">
-  <h1>Image Arithmetic & Logical Operations</h1>
+      <h1>Image Arithmetic & Logical Operations</h1>
 
-  <h2>1. Theory</h2>
-  <p>
-    Arithmetic and logical operations are widely used in image processing for tasks like blending, 
-    masking, and highlighting regions of interest.
-  </p>
-  <ul>
-    <li><b>Addition</b>: Combines two images pixel by pixel (useful for blending).</li>
-    <li><b>Subtraction</b>: Highlights differences between two images.</li>
-    <li><b>Logical Operations</b>:
-      <ul>
-        <li><b>AND</b>: Keeps overlapping pixel regions.</li>
-        <li><b>OR</b>: Combines non-zero regions from both images.</li>
-        <li><b>NOT</b>: Inverts pixel values.</li>
-        <li><b>XOR</b>: Highlights non-overlapping regions.</li>
-      </ul>
-    </li>
-  </ul>
+      <!-- Theory Section -->
+      <section>
+        <h2>Theory</h2>
+        <p>
+          Arithmetic and logical operations are essential in digital image processing. 
+          They allow us to combine, manipulate, or analyze images in a pixel-wise manner, 
+          which is useful for tasks like blending, masking, highlighting differences, or extracting regions of interest.
+        </p>
 
-  <h2>2. Code Example</h2>
-  <div class="code-section">
-    <pre><code class="language-python">
+        <h3>1. Arithmetic Operations</h3>
+        <ul>
+          <li><b>Addition</b>: Combines pixel values of two images to create a blended output. Useful for overlaying images or alpha blending.</li>
+          <li><b>Subtraction</b>: Highlights differences between two images, often used for motion detection or change detection.</li>
+          <li><b>Multiplication / Division</b>: Adjust pixel intensities for scaling brightness or applying masks.</li>
+        </ul>
+
+        <h3>2. Logical Operations</h3>
+        <p>
+          Logical (bitwise) operations are applied at the binary level for each pixel. Common operations include:
+        </p>
+        <ul>
+          <li><b>AND</b>: Keeps overlapping pixel regions where both images are non-zero.</li>
+          <li><b>OR</b>: Combines non-zero regions from both images.</li>
+          <li><b>NOT</b>: Inverts the pixel values of an image.</li>
+          <li><b>XOR</b>: Highlights pixels that differ between two images.</li>
+        </ul>
+
+        <h3>3. Applications</h3>
+        <p>
+          These operations are widely used in image processing pipelines for:
+          <ul>
+            <li>Image blending and compositing</li>
+            <li>Masking and region extraction</li>
+            <li>Highlighting differences between images</li>
+            <li>Preprocessing for computer vision tasks</li>
+          </ul>
+        </p>
+      </section>
+
+      <!-- Python Code Section -->
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -78,18 +99,6 @@ def add_example():
     plt.subplot(1,3,3); plt.imshow(cv2.cvtColor(blended, cv2.COLOR_BGR2RGB)); plt.title("Blended")
     plt.show()
 
-# --- Subtraction Example ---
-def sub_example():
-    img1 = cv2.imread('assets/cat.jpg', 0)
-    img2 = cv2.imread('assets/cat2.jpg', 0)
-    img2_resized = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
-    subtracted_img = cv2.subtract(img1, img2_resized)
-
-    plt.subplot(3,1,1); plt.imshow(img1, cmap='gray'); plt.title("Image 1")
-    plt.subplot(3,1,2); plt.imshow(img2, cmap='gray'); plt.title("Image 2")
-    plt.subplot(3,1,3); plt.imshow(subtracted_img, cmap='gray'); plt.title("Subtracted Result")
-    plt.show()
-
 # --- Logical Operations Example ---
 def logical_example():
     img1 = cv2.imread('assets/cat.jpg')
@@ -103,20 +112,26 @@ def logical_example():
 
 # Run examples
 # add_example()
-# sub_example()
 logical_example()
-    </code></pre>
-  </div>
+        </code></pre>
+      </section>
 
-  <h2>3. Example Output</h2>
-  <div class="output-section">
-    <p><b>Image Addition (Alpha Blending)</b>:</p>
-    <img src="../assets/addition_result.png" alt="Addition Result">
-
-    <p><b>Logical Operations</b>:</p>
-    <img src="../assets/logical_result.png" alt="Logical Result">
-  </div>
-  </main>
+      <!-- Output Section -->
+      <section>
+        <h2>Example Output</h2>
+        <p>Below are example outputs of arithmetic and logical operations:</p>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/addition_result.png" alt="Addition Result">
+            <figcaption>Addition (Alpha Blending)</figcaption>
+          </figure>
+          <figure>
+            <img src="../assets/logical_result.png" alt="Logical Operations Result">
+            <figcaption>Logical Operations (AND, OR, NOT, XOR)</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
   </div>
 </body>
 </html>

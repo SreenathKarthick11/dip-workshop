@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <title>Basic Image Operations</title>
   <link rel="stylesheet" href="../style.css">
+
   <!-- Prism.js for syntax highlighting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,47 +15,79 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Basic Topics</h2>
       <ul>
-        <li><a href="basic.html">Basic Operations</a></li>
+        <li><a href="basic.html" class="active">Basic Operations</a></li>
         <li><a href="basic_hist.html">Histogram</a></li>
         <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
-        <li><a href="contrast_stretching.html">Contrast stretching</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
       </ul>
     </nav>
 
     <!-- Main Content -->
     <main class="content">
-      <h1>Basic Image Operations</h1>
+      <h1> Basic Image Operations</h1>
 
-      <h3>Theory</h3>
+      <section>
+        <h3>Theory</h3>
       <p>
-        This example introduces fundamental image operations in OpenCV:
+        Digital image processing often begins with a set of basic operations that form the foundation for more advanced techniques. 
+        In this example, we explore some of the most essential functions provided by <strong>OpenCV</strong>, a powerful computer vision library.
       </p>
-      <ul>
-        <li>Loading an image in different modes (color, grayscale, unchanged).</li>
-        <li>Checking image shape (rows, columns, color channels).</li>
-        <li>Resizing an image using absolute pixel size or scale factors.</li>
-        <li>Rotating an image (90° clockwise in this example).</li>
-        <li>Displaying images in separate windows.</li>
-        <li>Saving processed images to disk.</li>
-      </ul>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+      <h4>1. Loading Images in Different Modes</h4>
+      <p>
+        Images can be read in multiple formats depending on the task:
+        <ul>
+          <li><b>Color mode</b> (default): preserves full RGB information.</li>
+          <li><b>Grayscale mode</b>: reduces the image to a single intensity channel, useful for feature extraction and reducing computational cost.</li>
+          <li><b>Unchanged mode</b>: loads the image as-is, including the alpha channel (transparency).</li>
+        </ul>
+      </p>
+
+      <h4>2. Inspecting Image Properties</h4>
+      <p>
+        Each image in OpenCV is represented as a NumPy array. By checking its <b>shape</b> 
+        (rows × columns × channels), we gain insight into its dimensions and color depth.
+      </p>
+
+      <h4>3. Resizing Images</h4>
+      <p>
+        Images can be resized in two ways:
+        <ul>
+          <li><b>Absolute resizing</b>: specifying the exact pixel dimensions (e.g., 400 × 400).</li>
+          <li><b>Relative scaling</b>: resizing proportionally using scale factors (fx, fy), such as reducing the size to 50%.</li>
+        </ul>
+      </p>
+
+      <h4>4. Rotating Images</h4>
+      <p>
+        Image rotation is a common geometric transformation. Here, we demonstrate a 
+        <b>90° clockwise rotation</b>, but OpenCV supports arbitrary rotation angles as well.
+      </p>
+
+      <h4>5. Displaying and Saving Images</h4>
+      <p>
+        OpenCV enables visualization of processed images in separate windows. Additionally, 
+        images can be <b>saved to disk</b> for later use in projects or reports.
+      </p>
+
+      <p>
+        Through these simple yet fundamental operations, you gain the building blocks 
+        to manipulate images for a wide variety of computer vision applications — 
+        from preprocessing datasets to preparing images for deep learning models.
+      </p>
+      </section>
+
+      <section>
+        <h2> Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 
 # Load an image
-# -1 or cv2.IMREAD_COLOR     : Load a color image (default)
-#  0 or cv2.IMREAD_GRAYSCALE : Load in grayscale mode
-#  1 or cv2.IMREAD_UNCHANGED : Load including alpha channel
+# cv2.IMREAD_COLOR     (-1): Load a color image (default)
+# cv2.IMREAD_GRAYSCALE (0) : Load in grayscale
+# cv2.IMREAD_UNCHANGED (1) : Load with alpha channel
 img = cv2.imread("assets/bear.jpg")
 
 print("Image shape:", img.shape)   # (rows, cols, channels)
@@ -61,33 +95,49 @@ print("Image shape:", img.shape)   # (rows, cols, channels)
 # Convert to grayscale
 gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-# Resize the image (two methods)
+# Resize the image
 # Method 1: Absolute size
-# img = cv2.resize(img, (400, 400))  
+# img_resized = cv2.resize(img, (400, 400))  
 
 # Method 2: Relative scaling (50% of original size)
-img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
+img_resized = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
 
-# Rotate the image (90 degrees clockwise)
-img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+# Rotate the image (90° clockwise)
+img_rotated = cv2.rotate(img_resized, cv2.ROTATE_90_CLOCKWISE)
 
 # Display images
-cv2.imshow("Original (Rotated + Resized)", img)
+cv2.imshow("Original", img)
 cv2.imshow("Grayscale", gray_image)
+cv2.imshow("Rotated + Resized", img_rotated)
 
-# Save image (optional)
-# cv2.imwrite("bear_processed.jpg", img)
+# Save processed image (optional)
+# cv2.imwrite("bear_processed.jpg", img_rotated)
 
-# Wait until any key is pressed, then close windows
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output Example</h3>
-      <p>Original vs Grayscale vs Rotated Image:</p>
-      <img src="../assets/bear.jpg" alt="Original Image" width="250">
-      <img src="../assets/bear_gray.jpg" alt="Grayscale Image" width="250">
-      <img src="../assets/bear_rotated.jpg" alt="Rotated Image" width="250">
+      <section>
+        <h2>  Output Example</h2>
+        <p>
+          Below are sample outputs after applying the basic operations:
+        </p>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/bear.jpg" alt="Original Image">
+            <figcaption>Original Image</figcaption>
+          </figure>
+          <figure>
+            <img src="../assets/bear_gray.jpg" alt="Grayscale Image">
+            <figcaption>Grayscale Image</figcaption>
+          </figure>
+          <figure>
+            <img src="../assets/bear_rotated.jpg" alt="Rotated Image">
+            <figcaption>Rotated + Resized</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
   </div>
 </body>

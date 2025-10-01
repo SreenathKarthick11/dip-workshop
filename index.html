@@ -4,116 +4,265 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Processing Topics</title>
-  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
   <style>
-    body { display: flex; margin: 0; font-family: Arial, sans-serif; }
-    .sidebar {
-      width: 250px;
-      background-color: #f8f9fa;
-      padding: 15px;
-      height: 100vh;
-      overflow-y: auto;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
     }
-    .sidebar h2 { margin-top: 0; font-size: 1.2em; }
-    .sidebar ul { list-style: none; padding: 0; }
-    .sidebar li { margin: 5px 0; }
-    .accordion {
-      background: none;
-      border: none;
-      cursor: pointer;
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #1b51a1;
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 18px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    main {
+      flex: 1;
+      padding: 30px;
+    }
+
+    section {
+      padding: 20px 20px;
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      background-color: #161b22;
+      border-radius: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #58a6ff;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    section img {
+      display: block;
+      max-width: 100%;   /* scales image to fit container */
+      height: 50%;      /* keeps aspect ratio */
+      margin: 30px auto; /* centers image with spacing */
+      border-radius: 12px; /* rounded corners */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* subtle shadow */
+    }
+    /* Grid of buttons */
+    .topic-group {
+      margin-bottom: 40px;
+    }
+
+    .topic-group h3 {
+      margin-bottom: 15px;
+      color: #f0f6fc;
+      font-size: 20px;
+      border-left: 4px solid #58a6ff;
+      padding-left: 10px;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      background-color: #1f6feb;
+      color: white;
+      padding: 15px 20px;
+      text-decoration: none;
       font-weight: bold;
-      width: 100%;
-      text-align: left;
-      padding: 8px 0;
-      font-size: 1em;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .submenu { display: none; padding-left: 15px; }
-    .submenu li { padding: 3px 0; }
-    .submenu li a { text-decoration: none; color: #333; }
-    .submenu li a:hover { text-decoration: underline; }
-    .content { flex: 1; padding: 20px; }
+
+    .btn:hover {
+      background-color: #043375;
+      transform: scale(1.05);
+    }
+    #contributors {
+      padding: 40px 20px;
+      background-color: #0a0a0a;
+      color: #fff;
+    }
+
+    #contributors h2, #contributors h3 {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #contributors a {
+      color: #4caeff;
+      margin-right: 15px;
+      text-decoration: none;
+    }
+
+    #contributors a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #161b22;
+      color: #8b949e;
+      /* margin-top: 0px; */
+    }
+
+    @media screen and (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      header p {
+        font-size: 1rem;
+      }
+
+      section {
+        width: 95%;
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <h2>Topics</h2>
-    <ul class="menu">
-      <!-- 1. Basics -->
-      <li>
-        <button class="accordion">1. Basics</button>
-        <ul class="submenu">
-          <li><a href="code/basic.html">Basic image loading & display</a></li>
-          <li><a href="code/basic_hist.html">Histogram basics</a></li>
-          <li><a href="code/arithmetic_op.html">Arithmetic operations</a></li>
-        </ul>
-      </li>
+  <!-- Header -->
+  <header>
+    <h1>Image Processing Workshop</h1>
+    <p>Explore the fundamentals and advanced techniques of digital image processing with interactive examples.</p>
+  </header>
 
-      <!-- 2. Intensity & Contrast -->
-      <li>
-        <button class="accordion">2. Intensity & Contrast</button>
-        <ul class="submenu">
-          <li><a href="code/brightness.html">Brightness adjustment</a></li>
-          <li><a href="code/contrast.html">Simple contrast</a></li>
-          <li><a href="code/contrast_stretching.html">Advanced contrast stretching</a></li>
-          <li><a href="code/linear_transformation.html">Linear operations</a></li>
-          <li><a href="code/log_power_transformation.html">Log & Power transforms</a></li>
-          <li><a href="code/intensity_slicing.html">Intensity slicing</a></li>
-        </ul>
-      </li>
+  <!-- Workshop Description -->
+  <main>
+    <section>
+      <h2>About the Workshop</h2>
+      <p>
+        The <b>Digital Image Processing Workshop</b> is designed to give participants both a 
+        <b>theoretical foundation</b> and <b>practical skills</b> in image processing. 
+        You will start by exploring the basics of how images are represented digitally, 
+        and then gradually progress to advanced enhancement and transformation techniques. 
+      </p>
+      <p>
+        Topics include <b>pixel-level operations</b> such as brightness and contrast adjustments, 
+        <b>image transformations</b> like affine mapping and negative imaging, 
+        <b>noise modeling and reduction</b>, and a variety of <b>thresholding methods</b> 
+        for segmentation and feature extraction.
+      </p>
+      <p>
+        By combining lectures with hands-on coding sessions, this workshop ensures that you not only 
+        understand <b>the mathematics and algorithms</b> behind image processing, 
+        but also gain experience implementing them with real-world datasets. 
+        These skills are directly applicable in domains such as 
+        <b>computer vision, medical imaging, remote sensing, and artificial intelligence</b>.
+      </p>
+    </section>
+    <section>
+      <img src="assets/dip_overview.png" alt="dip_overview">
+    </section>
 
-      <!-- 3. Image Transformations -->
-      <li>
-        <button class="accordion">3. Image Transformations</button>
-        <ul class="submenu">
-          <li><a href="code/affine_translations.html">Affine transformations (shift, rotate, scale)</a></li>
-          <li><a href="code/invert_img.html">Negative image</a></li>
-          <li><a href="code/illuminating_method.html">Illumination adjustment</a></li>
-        </ul>
-      </li>
+    <!-- Topic Buttons -->
+    <section>
+      <h2>Explore Topics</h2>
 
-      <!-- 4. Noise & Filtering -->
-      <li>
-        <button class="accordion">4. Noise & Filtering</button>
-        <ul class="submenu">
-          <li><a href="code/gaussian_noise.html">Gaussian noise</a></li>
-          <li><a href="code/salt_and_pepper_noise.html">Salt & pepper noise</a></li>
-          <li><a href="code/pixel_bin.html">Binarization by pixel grouping</a></li>
-        </ul>
-      </li>
+      <!-- Basics -->
+      <div class="topic-group">
+        <h3>Basics</h3>
+        <div class="button-grid">
+          <a href="code/basic.html" class="btn">Basic Operations</a>
+          <a href="code/basic_hist.html" class="btn">Histogram Basics</a>
+          <a href="code/arithmetic_op.html" class="btn">Arithmetic Operations</a>
+        </div>
+      </div>
 
-      <!-- 5. Thresholding -->
-      <li>
-        <button class="accordion">5. Thresholding</button>
-        <ul class="submenu">
-          <li><a href="code/threshold.html">Basic thresholding</a></li>
-          <li><a href="code/double_thresholding.html">Double thresholding</a></li>
-          <li><a href="code/otsu_thresholding.html">Otsu method</a></li>
-          <li><a href="code/adaptive_thresholding.html">Adaptive thresholding</a></li>
-        </ul>
-      </li>
+      <!-- Intensity & Contrast -->
+      <div class="topic-group">
+        <h3>Intensity & Contrast</h3>
+        <div class="button-grid">
+          <a href="code/brightness.html" class="btn">Brightness</a>
+          <a href="code/contrast.html" class="btn">Contrast</a>
+          <a href="code/contrast_stretching.html" class="btn">Contrast Stretching</a>
+          <a href="code/linear_transformation.html" class="btn">Linear Transformations</a>
+          <a href="code/log_power_transformation.html" class="btn">Log & Power-Law</a>
+          <a href="code/intensity_slicing.html" class="btn">Intensity Slicing</a>
+        </div>
+      </div>
 
-    </ul>
-  </nav>
+      <!-- Transformations -->
+      <div class="topic-group">
+        <h3>Transformations</h3>
+        <div class="button-grid">
+          <a href="code/affine_translations.html" class="btn">Affine Transformations</a>
+          <a href="code/invert_img.html" class="btn">Negative Image</a>
+          <a href="code/illuminating_method.html" class="btn">Illumination</a>
+        </div>
+      </div>
 
-  <!-- Main content -->
-  <main class="content">
-    <h1>Welcome to Image Processing Topics</h1>
-    <p>Select a topic from the sidebar to view code examples and explanations.</p>
+      <!-- Noise -->
+      <div class="topic-group">
+        <h3>Noise</h3>
+        <div class="button-grid">
+          <a href="code/gaussian_noise.html" class="btn">Gaussian Noise</a>
+          <a href="code/salt_and_pepper_noise.html" class="btn">Salt & Pepper Noise</a>
+          <a href="code/pixel_bin.html" class="btn">Pixel Binning</a>
+        </div>
+      </div>
+
+      <!-- Thresholding -->
+      <div class="topic-group">
+        <h3>Thresholding</h3>
+        <div class="button-grid">
+          <a href="code/threshold.html" class="btn">Thresholding</a>
+          <a href="code/double_thresholding.html" class="btn">Double Thresholding</a>
+          <a href="code/otsu_thresholding.html" class="btn">Otsu Thresholding</a>
+          <a href="code/adaptive_thresholding.html" class="btn">Adaptive Thresholding</a>
+        </div>
+      </div>
+    </section>
+    <section id="contributors">
+  <h2>Contributor</h2>
+  <div>
+    <h3>M Sreenath Karthick</h3>
+    <p>Content Creator & Web Designer</p>
+    <p>
+      <a href="https://github.com/SreenathKarthick11/" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/sreenath-karthick-7551aa288/" target="_blank">LinkedIn</a>
+    </p>
+  </div>
+  </section>
   </main>
-
-  <script>
-    // Accordion functionality
-    document.querySelectorAll('.accordion').forEach(button => {
-      button.addEventListener('click', () => {
-        const submenu = button.nextElementSibling;
-        submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
-      });
-    });
-  </script>
+  
+  <!-- Footer -->
+  <footer>
+    © Digital Image Processing Workshop
+  </footer>
 </body>
 </html>

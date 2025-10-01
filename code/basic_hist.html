@@ -1,11 +1,13 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Histogram Analysis</title>
   <link rel="stylesheet" href="../style.css">
+
   <!-- Prism.js for syntax highlighting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
@@ -13,18 +15,11 @@
   <div class="container">
     <!-- Sidebar -->
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <h2>Basic Topics</h2>
       <ul>
-        <li><a href="basic_hist.html">Histogram</a></li>
-        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
-        <li><a href="contrast.html">Contrast</a></li>
         <li><a href="basic.html">Basic Operations</a></li>
-        <li><a href="brightness.html">Brightness</a></li>
-        <li><a href="contrast_stretching.html">Contrast stretching</a></li>
-        <li><a href="threshold.html">Thresholding</a></li>
-        <li><a href="otsu_thresholding.html">Otsu Method</a></li>
-        <li><a href="adaptive_thresholding.html">Adaptive Thresholding</a></li>
-        <li><a href="noise.html">Noise Methods</a></li>
+        <li><a href="basic_hist.html" class="active">Histogram</a></li>
+        <li><a href="arithmetic_op.html">Arithmetic Operations</a></li>
       </ul>
     </nav>
 
@@ -32,20 +27,50 @@
     <main class="content">
       <h1>Histogram Analysis</h1>
 
-      <h3>Theory</h3>
-      <p>
-        Histograms are graphical representations of the distribution of pixel intensities 
-        in an image. They are useful for:
-      </p>
-      <ul>
-        <li>Understanding brightness and contrast levels.</li>
-        <li>Detecting underexposure or overexposure.</li>
-        <li>Performing contrast stretching and equalization.</li>
-        <li>Comparing grayscale vs. color intensity distributions.</li>
-      </ul>
+      <section>
+        <h2>Theory</h2>
+        <p>
+          A histogram is one of the most fundamental tools in image processing. 
+          It provides a <strong>graphical representation of pixel intensity distribution</strong>, 
+          allowing us to analyze how brightness and contrast are spread across an image.
+        </p>
 
-      <h3>Python Code</h3>
-      <pre><code class="language-python">
+        <h3>1. Understanding Brightness and Contrast</h3>
+        <p>
+          A histogram shows how many pixels fall into each intensity level (0–255 for 8-bit images). 
+          A narrow histogram may indicate <b>low contrast</b>, while a wider spread suggests <b>higher contrast</b>.
+        </p>
+
+        <h3>2. Detecting Exposure Issues</h3>
+        <ul>
+          <li>If values cluster on the <b>left</b> → the image is likely <b>underexposed</b> (too dark).</li>
+          <li>If values cluster on the <b>right</b> → the image may be <b>overexposed</b> (too bright).</li>
+        </ul>
+
+        <h3>3. Enhancing Images with Histograms</h3>
+        <p>
+          Histogram-based methods like <b>contrast stretching</b> and <b>histogram equalization</b> 
+          adjust pixel intensities to improve image quality. 
+          These are widely used in <i>medical imaging, satellite imaging, and photography</i>.
+        </p>
+
+        <h3>4. Grayscale vs. Color Histograms</h3>
+        <ul>
+          <li><b>Grayscale histograms</b> focus on intensity values from a single channel.</li>
+          <li><b>Color histograms</b> are computed separately for Red, Green, and Blue channels, 
+              useful for analyzing color balance and detecting artifacts.</li>
+        </ul>
+
+        <p>
+          In short, histogram analysis helps us <b>diagnose image quality</b>, 
+          <b>detect exposure problems</b>, and <b>prepare images for advanced processing tasks</b> 
+          like segmentation and enhancement.
+        </p>
+      </section>
+
+      <section>
+        <h2>Python Code</h2>
+        <pre><code class="language-python">
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -108,12 +133,25 @@ gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 # Plot histograms
 plot_histogram(gray_image, color_space="GRAY")
 plot_histogram(image, color_space="BGR")
-      </code></pre>
+        </code></pre>
+      </section>
 
-      <h3>Output Example</h3>
-      <p>Below are example histograms:</p>
-      <img src="../assets/dog_gray_hist.png" alt="Grayscale Histogram" width="400">
-      <img src="../assets/dog_color_hist.png" alt="Color Histogram" width="400">
+      <section>
+        <h2>Output Example</h2>
+        <p>
+          Below are example histograms for a grayscale and color image:
+        </p>
+        <div class="output-gallery">
+          <figure>
+            <img src="../assets/dog_gray_hist.png" alt="Grayscale Histogram">
+            <figcaption>Grayscale Histogram</figcaption>
+          </figure>
+          <figure>
+            <img src="../assets/dog_color_hist.png" alt="Color Histogram">
+            <figcaption>Color Histogram</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
   </div>
 </body>
