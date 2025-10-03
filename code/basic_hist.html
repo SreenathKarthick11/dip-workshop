@@ -155,5 +155,19 @@ plot_histogram(image, color_space="BGR")
       </section>
     </main>
   </div>
+   <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.createElement('div');
+  toggleBtn.className = 'menu-toggle';
+  toggleBtn.innerText = '☰ Menu';
+  document.body.appendChild(toggleBtn);
+
+  const sidebar = document.querySelector('.sidebar');
+  toggleBtn.addEventListener('click', () => {
+    toggleBtn.style.display = 'none';
+    sidebar.classList.toggle('active');
+  });
+});
+</script>
 </body>
 </html>

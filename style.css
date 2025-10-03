@@ -211,26 +211,62 @@ footer {
   color: #8b949e;
   margin-top: 30px;
 }
+.menu-toggle{
+  display: none;
+}
 
 /* --------------------
    Responsive Design
 --------------------- */
 @media screen and (max-width: 768px) {
+  /* Stack layout */
   .container {
     flex-direction: column;
   }
 
+  /* Sidebar turns into top navbar */
   .sidebar {
     width: 100%;
     min-height: auto;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    height: 100vh;
+    transition: left 0.3s ease;
+    z-index: 1000;
   }
 
+  /* When active, sidebar slides in */
+  .sidebar.active {
+    left: 0;
+  }
+
+  /* Add a hamburger button */
+.menu-toggle {
+  display: block;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 2000;
+  background-color: #1f6feb;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
+
+  /* Push content down to avoid overlap */
   .content {
-    padding: 20px;
+    padding: 70px 20px 20px;
+    max-width: 100%;
   }
 
+  /* Gallery stacks vertically */
   .output-gallery {
     flex-direction: column;
+    align-items: center;
   }
 }
+
